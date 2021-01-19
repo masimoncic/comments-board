@@ -1,0 +1,8 @@
+<% layout('layouts/boilerplate') %>
+
+<h1>INDEX</h1>
+<ul>
+    <% for(let post of posts) {%>
+        <li><a href="/posts/<%=post.id%>"><%=post.title%></a></li>
+        <% } %>
+</ul>
