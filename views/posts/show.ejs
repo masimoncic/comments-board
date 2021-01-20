@@ -7,3 +7,14 @@
 <p>
     <%= post.content %>
 </p>
+<p>
+    <form action="/posts/<%= post.id %>?_method=DELETE" method="POST">
+        <button>Delete</button>
+    </form>
+</p>
+<p>
+    <a href="/posts/<%=post.id%>/edit">Edit</a>
+</p>
+<footer>
+    <a href="/posts">All Posts</a>
+</footer>
