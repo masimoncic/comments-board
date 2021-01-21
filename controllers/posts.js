@@ -3,6 +3,7 @@ const Post = require('../models/posts')
 
 module.exports.renderIndex = async (req, res) => {
     const posts = await Post.find({});
+    console.log(posts);
     res.render('posts/index', { posts });
 }
 
@@ -11,7 +12,7 @@ module.exports.renderNew = (req, res) => {
 }
 
 module.exports.renderShow = async(req, res) => {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate('comments');
     res.render('posts/show', { post });
 }
 
@@ -35,6 +36,6 @@ module.exports.editPost = async(req, res) => {
 
 module.exports.deletePost = async(req, res) => {
     const id = req.params.id
-    const post = await Post.findByIdAndDelete(id);
+    await Post.findByIdAndDelete(id);
     res.redirect('/posts')
 }

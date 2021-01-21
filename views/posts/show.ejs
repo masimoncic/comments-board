@@ -1,20 +1,51 @@
 <% layout('layouts/boilerplate') %>
 
-<h1>SHOW</h1>
+<div class="col-8 offset-2">
+    <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title"><%=post.title%></h5>
+          <h6 class="card-subtitle mb-2 text-muted">author placeholder</h6>
+          <p class="card-text"><%=post.content%></p>
+          <div class="card-body">
+            <a href="/posts/<%=post.id%>/edit" class="card-link btn btn-primary">Edit Post</a>
+            <form action="/posts/<%= post.id %>?_method=DELETE" class="d-inline" method="POST">
+                <button class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+    
+        </div>
+      </div>
+    
+    
+    
+    
+      <form action="/posts/<%=post.id%>/comments" method="POST" class="needs-validation mb-3" novalidate>
+        <div class="mb-3">
+            <label class="form-label" for="comment">Write a comment</label>
+            <textarea class="form-control" id="comment" name="comment[content]" rows="4" required></textarea>
+        </div>
+        
+        <button class="btn btn-success">Submit comment</button>
+        </form>  
+        <% for(let i = post.comments.length-1; i >= 0; i--) {%>
+            <div class="card mb-5">
+                <div class="card-body">
+                    <%=post.comments[i].content%>
+                </div>
+                <div class="card-footer">
+                    placeholder author
+                </div>
+                <form action="/posts/<%= post.id %>/comments/<%= post.comments[i].id%>?_method=DELETE" class="d-inline" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+    
+    
+        <% } %>
+        
+</div>
 
-<h3><%=post.title%></h4>
 
-<p>
-    <%= post.content %>
-</p>
-<p>
-    <form action="/posts/<%= post.id %>?_method=DELETE" method="POST">
-        <button>Delete</button>
-    </form>
-</p>
-<p>
-    <a href="/posts/<%=post.id%>/edit">Edit</a>
-</p>
-<footer>
-    <a href="/posts">All Posts</a>
-</footer>
+
+
+
