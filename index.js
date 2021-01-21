@@ -55,6 +55,10 @@ app.use((req, res, next) => {
     next();
 })
 
+app.get('/', (req, res) => {
+    res.redirect('/posts')
+})
+
 app.use('/posts', postRoutes);
 app.use('/posts/:id/comments', commentRoutes)
 
