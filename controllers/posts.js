@@ -3,7 +3,7 @@ const Post = require('../models/posts')
 
 module.exports.renderIndex = async (req, res) => {
     const posts = await Post.find({});
-    console.log(posts);
+    //console.log(posts);
     res.render('posts/index', { posts });
 }
 
