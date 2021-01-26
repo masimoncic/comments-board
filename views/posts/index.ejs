@@ -1,17 +1,17 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="col-8 offset-2 mb-3">
+<div class="col-xl-10 offset-xl-1">
     <h1 class="text-center">All Posts</h1> 
     <a href="/posts/new">Create new post</a>
 </div>
 
     <% for(let i = posts.length-1; i >= 0; i--) {%>
-        <div class="card col-10 offset-1">
+        <div class="card col-xl-10 offset-xl-1">
             <div class="card-body">
                 <a href="/posts/<%=posts[i].id%>" class="fs-5"><%=posts[i].title%></a>
             </div>
             <div class="card-footer">
-                placeholder author
+                <%= posts[i].author.username %>
             </div>
 
         </div>

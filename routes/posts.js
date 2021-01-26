@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const posts = require('../controllers/posts');
 const wrapAsync = require('../utils/wrapAsync');
-const { validatePost, isLoggedIn } = require('../middleware');
+const { validatePost, isLoggedIn, isAuthor } = require('../middleware');
 
 
 
@@ -14,8 +14,8 @@ router.get('/new', isLoggedIn, posts.renderNew);
 
 router.route('/:id')
     .get(wrapAsync(posts.renderShow))
-    .put(validatePost, wrapAsync(posts.editPost))
-    .delete(wrapAsync(posts.deletePost))
+    .put(isLoggedIn, isAuthor, validatePost, wrapAsync(posts.editPost))
+    .delete(isLoggedIn, isAuthor, wrapAsync(posts.deletePost))
 
 router.get('/:id/edit', wrapAsync(posts.renderEdit))
 

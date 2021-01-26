@@ -4,8 +4,8 @@ const Comment = require('../models/comments');
 
 module.exports.createComment = async (req, res) => {
     const post = await Post.findById(req.params.id);
-    console.log(req.body);
     const comment = new Comment(req.body.comment);
+    comment.author = req.user._id;
     post.comments.push(comment);
     await comment.save();
     await post.save();

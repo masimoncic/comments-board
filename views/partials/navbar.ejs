@@ -15,5 +15,19 @@
           </li>
         </ul>
       </div>
+      <ul class="navbar-nav">
+        <% if (!currentUser) { %>
+          <li class="nav-item">
+            <a class="nav-link active" href="/users/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/users/register">Register</a>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link active" href="/users/logout">Logout</a>
+          </li>
+          <% } %>
+        </ul>
     </div>
   </nav>

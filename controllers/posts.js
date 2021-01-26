@@ -2,7 +2,7 @@ const methodOverride = require('method-override')
 const Post = require('../models/posts')
 
 module.exports.renderIndex = async (req, res) => {
-    const posts = await Post.find({});
+    const posts = await Post.find({}).populate('author');
     //console.log(posts);
     res.render('posts/index', { posts });
 }
@@ -12,7 +12,12 @@ module.exports.renderNew = (req, res) => {
 }
 
 module.exports.renderShow = async(req, res) => {
-    const post = await Post.findById(req.params.id).populate('comments');
+    const post = await Post.findById(req.params.id).populate({
+        path: 'comments',
+        populate: {
+            path: 'author',
+        }
+    }).populate('author');
     if(!post) {
         req.flash('error', 'Post not Found');
         return res.redirect('/posts');
@@ -31,6 +36,7 @@ module.exports.renderEdit = async(req, res) => {
 
 module.exports.createPost = async(req, res) => {
     const post = new Post(req.body.post);
+    post.author = req.user._id;
     await post.save();
     console.log(post)
     req.flash('success', 'Created Post')
