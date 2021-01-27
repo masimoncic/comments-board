@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 
 const express = require('express');
 const path = require('path');
@@ -8,14 +12,17 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const mongoSanitize = require('express-mongo-sanitize');
+const  helmet = require('helmet');
 
 const User = require('./models/users')
 const ExpressError = require('./utils/ExpressError')
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
 const userRoutes = require('./routes/users');
-
-mongoose.connect('mongodb://localhost:27017/comments-board', {
+const dbUrl= process.env.DB_URL;
+//'mongodb://localhost:27017/comments-board'
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -38,6 +45,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(mongoSanitize());
 
 const sessionConfig = {
     secret: 'asiahfuahiczxcvdhwjedgvjsfadaswhefga',
@@ -45,6 +53,7 @@ const sessionConfig = {
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        //secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 7 * 24,
         maxAge: Date.now() + 1000 * 60 * 60 * 7 * 24,
 
@@ -52,6 +61,7 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig));
 app.use(flash());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 app.use(passport.initialize());
 app.use(passport.session());
