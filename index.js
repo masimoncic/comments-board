@@ -99,7 +99,7 @@ app.use('/posts/:id/comments', commentRoutes)
 
 
 app.get('/', (req, res) => {
-    res.redirect('/posts')
+    res.render('/home')
 })
 
 
