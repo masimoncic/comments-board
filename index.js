@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -20,7 +21,7 @@ const ExpressError = require('./utils/ExpressError')
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
 const userRoutes = require('./routes/users');
-const dbUrl= process.env.DB_URL;
+const dbUrl= process.env.DB_URL  || 'mongodb://localhost:27017/comments-board';
 //'mongodb://localhost:27017/comments-board'
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
@@ -47,8 +48,21 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 
+store = new MongoStore({
+    url: dbUrl,
+    secret: 'sdfsdfgserglfdg',
+    touchAfter: 24 * 3600,
+})
+
+store.on('error', function(e) {
+    console.log("SESSION STORE ERROR", e)
+});
+
+const secret = process.env.SECRET || 'aslvsldfsh'
+
 const sessionConfig = {
-    secret: 'asiahfuahiczxcvdhwjedgvjsfadaswhefga',
+    store: store,
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {

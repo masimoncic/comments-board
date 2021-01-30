@@ -19,6 +19,7 @@
   "homepage": "https://github.com/masimoncic/comments-board#readme",
   "dependencies": {
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.2.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "ejs-mate": "^3.0.0",
